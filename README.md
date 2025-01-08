@@ -17,7 +17,7 @@ Zdrojové dáta obsahujú tieto tabuľky:
 
 ERD diagram znázorňujúci vzťahy medzi tabuľkami:
 
-![ERD Diagram](link-na-diagram.png)
+![ERD Diagram](ERD_diagram.png)
 
 ## 2. Návrh dimenzionálneho modelu
 
@@ -50,7 +50,7 @@ Navrhli sme multi-dimenzionálny model typu hviezda s nasledujúcimi tabuľkami:
    - **Údaje**: `GenreId`, `Name`
    - **Typ dimenzie**: SCD Type 1
 
-![Dimenzionálny Model](link-na-dimenzionalny-model.png)
+![Dimenzionálny Model](Star_Diagram.png)
 
 
   
