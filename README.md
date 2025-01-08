@@ -109,21 +109,21 @@ Faktová tabuľka obsahuje informácie o predaji skladieb, ako sú jednotkové c
 ```sql
 CREATE  TABLE  TrackSale_fact  AS
 SELECT
-	il.InvoiceLineId  AS InvoiceLineId,
-	il.UnitPrice  AS UnitPrice,
-	il.Quantity  AS Quantity,
-	(il.UnitPrice * il.Quantity) AS TotalRevenue,
-	t.GenreId  AS GenreId,
-	t.AlbumId  AS AlbumId,
-	t.MediaTypeId  AS MediaTypeId,
-	t.TrackId  AS TrackId,
-	al.ArtistId  AS ArtistId
+    il.InvoiceLineId  AS InvoiceLineId,
+    il.UnitPrice  AS UnitPrice,
+    il.Quantity  AS Quantity,
+    (il.UnitPrice * il.Quantity) AS TotalRevenue,
+    t.GenreId  AS GenreId,
+    t.AlbumId  AS AlbumId,
+    t.MediaTypeId  AS MediaTypeId,
+    t.TrackId  AS TrackId,
+    al.ArtistId  AS ArtistId
 FROM
-	InvoiceLine AS il
+    InvoiceLine AS il
 JOIN
-	Track AS t ON  il.TrackId  =  t.TrackId
+    Track AS t ON  il.TrackId  =  t.TrackId
 JOIN
-	Album AS al ON  t.AlbumId  =  al.AlbumId;
+    Album AS al ON  t.AlbumId  =  al.AlbumId;
 ```
 
   
@@ -137,14 +137,14 @@ JOIN
 ```sql
 CREATE  TABLE  Track_dim  AS
 SELECT
-	TrackId AS TrackId,
-	Name  AS TrackName,
-	Composer AS Composer,
-	Milliseconds AS Milliseconds,
-	Bytes AS Bytes,
-	UnitPrice AS UnitPrice
+    TrackId AS TrackId,
+    Name  AS TrackName,
+    Composer AS Composer,
+    Milliseconds AS Milliseconds,
+    Bytes AS Bytes,
+    UnitPrice AS UnitPrice
 FROM
-	Track;
+    Track;
 ```
 
   
@@ -154,10 +154,10 @@ FROM
 ```sql
 CREATE  TABLE  Artist_dim  AS
 SELECT
-	ArtistId AS ArtistId,
-	Name  AS ArtistName
+    ArtistId AS ArtistId,
+    Name  AS ArtistName
 FROM
-	Artist;
+    Artist;
 ```
 
   
@@ -167,10 +167,10 @@ FROM
 ```sql
 CREATE  TABLE  Album_dim  AS
 SELECT
-	AlbumId AS AlbumId,
-	Title AS AlbumTitle
+    AlbumId AS AlbumId,
+    Title AS AlbumTitle
 FROM
-	Album;
+    Album;
 
 ```
 
@@ -181,10 +181,10 @@ FROM
 ```sql
 CREATE  TABLE  MediaType_dim  AS
 SELECT
-	MediaTypeId AS MediaTypeId,
-	Name  AS MediaTypeName
+    MediaTypeId AS MediaTypeId,
+    Name  AS MediaTypeName
 FROM
-	MediaType;
+    MediaType;
 ```
 
   
@@ -194,10 +194,10 @@ FROM
 ```sql
 CREATE  TABLE  Genre_dim  AS
 SELECT
-	GenreId AS GenreId,
-	Name  AS GenreName
+    GenreId AS GenreId,
+    Name  AS GenreName
 FROM
-	Genre;
+    Genre;
 ```
 
   
