@@ -232,6 +232,8 @@ ETL proces umožnil spracovanie pôvodných dát z CSV formátu do viacdimenzion
 
 ## 4. Vizualizácia dát
 
+![Chinook_Dashboard](Chinook_Dashboard.png)
+
 1. **Predaj podľa albumu**
    - Vizualizácia: Stĺpcový graf zobrazujúci celkový predaj (Quantity) podľa albumu.
    - SQL dotaz:
