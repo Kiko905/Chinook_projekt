@@ -270,55 +270,58 @@ ETL proces umožnil spracovanie pôvodných dát z CSV formátu do viacdimenzion
 
      ```
 
-3. **Predaj podľa skladby**
-   - Vizualizácia: Stĺpcový graf zobrazujúci celkový predaj (Quantity) podľa skladby.
+3. **Predaj podľa interpreta**
+   - Vizualizácia: Stĺpcový graf zobrazujúci celkový príjem (TotalRevenue) podľa interpreta.
    - SQL dotaz:
      ```sql
      SELECT 
-         tr.Name, 
-         SUM(ts.Quantity) AS TotalQuantitySold
+        a.ArtistName, 
+        SUM(ts.TotalRevenue) AS TotalRevenue
      FROM 
-         TrackSale_fact ts
+        TrackSale_fact ts
      JOIN 
-         Track_dim tr ON ts.TrackId = tr.TrackId
+        Artist_dim a ON ts.ArtistId = a.ArtistId
      GROUP BY 
-         tr.Name
+        a.ArtistName
      ORDER BY 
-         TotalQuantitySold DESC;
+        TotalRevenue DESC;
      ```
 
-4. **Celkový príjem podľa albumu**
-   - Vizualizácia: Stĺpcový graf zobrazujúci celkový príjem (TotalRevenue) podľa albumu.
+4. **Predaj podľa média**
+   - Vizualizácia: Stĺpcový graf zobrazujúci celkový príjem (TotalRevenue) podľa typu média.
    - SQL dotaz:
      ```sql
      SELECT 
-         al.Title, 
+         mt.MediaTypeName, 
          SUM(ts.TotalRevenue) AS TotalRevenue
      FROM 
          TrackSale_fact ts
      JOIN 
-         Album_dim al ON ts.AlbumId = al.AlbumId
+         MediaType_dim mt ON ts.MediaTypeId = mt.MediaTypeId
      GROUP BY 
-         al.Title
+         mt.MediaTypeName
      ORDER BY 
          TotalRevenue DESC;
      ```
 
-5. **Priemerný príjem na skladbu podľa interpreta**
-   - Vizualizácia: Stĺpcový graf zobrazujúci priemerný príjem na skladbu (TotalRevenue / počet skladieb) podľa interpreta.
+5. **Predaj podľa zamestnanca**
+   - Vizualizácia: Stĺpcový graf zobrazujúci počet predajov (NumberOfSales) vykonaných zamestnancami.
    - SQL dotaz:
      ```sql
      SELECT 
-         ar.Name, 
-         AVG(ts.TotalRevenue) AS AvgRevenuePerTrack
+         e.EmployeeId, 
+         e.FirstName || ' ' || e.LastName AS EmployeeName, 
+         COUNT(ts.InvoiceLineId) AS NumberOfSales
      FROM 
          TrackSale_fact ts
      JOIN 
-         Artist_dim ar ON ts.ArtistId = ar.ArtistId
+         Customer_dim c ON ts.CustomerID = c.CustomerID
+     JOIN 
+         Employee_dim e ON c.SupportRepId = e.EmployeeID
      GROUP BY 
-         ar.Name
+         e.EmployeeId, e.FirstName, e.LastName
      ORDER BY 
-         AvgRevenuePerTrack DESC;
+         NumberOfSales DESC;
      ```
 
 Každá vizualizácia poskytuje hodnotné ľahko interpretovateľné pohľady na dáta a pomáha odpovedať na dôležité obchodné otázky.
