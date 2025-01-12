@@ -232,40 +232,42 @@ ETL proces umožnil spracovanie pôvodných dát z CSV formátu do viacdimenzion
 
 ## 4. Vizualizácia dát
 
-![Chinook_Dashboard](Chinook_Dashboard.png)
+![Chinook_Dashboard](Chinook_Dashboard_spravne.png)
 
-1. **Predaj podľa albumu**
-   - Vizualizácia: Stĺpcový graf zobrazujúci celkový predaj (Quantity) podľa albumu.
+1. **Predaj podľa žánru**
+   - Vizualizácia: Stĺpcový graf zobrazujúci celkový príjem (TotalRevenue) podľa žánru.
    - SQL dotaz:
      ```sql
      SELECT 
-         al.Title, 
-         SUM(ts.Quantity) AS TotalQuantitySold
+       g.GenreName, 
+       SUM(ts.TotalRevenue) AS TotalRevenue
      FROM 
-         TrackSale_fact ts
+       TrackSale_fact ts
      JOIN 
-         Album_dim al ON ts.AlbumId = al.AlbumId
+       Genre_dim g ON ts.GenreId = g.GenreId
      GROUP BY 
-         al.Title
+       g.GenreName
      ORDER BY 
-         TotalQuantitySold DESC;
+       TotalRevenue DESC;
      ```
 
-2. **Predaj podľa interpreta**
-   - Vizualizácia: Stĺpcový graf zobrazujúci celkový predaj (Quantity) podľa interpreta.
+2. **Top 10 skladieb podľa príjmu**
+   - Vizualizácia: Stĺpcový graf zobrazujúci 10 najlepších skladieb podľa príjmu.
    - SQL dotaz:
      ```sql
      SELECT 
-         ar.Name, 
-         SUM(ts.Quantity) AS TotalQuantitySold
+         t.TrackName, 
+         SUM(ts.TotalRevenue) AS TotalRevenue
      FROM 
          TrackSale_fact ts
      JOIN 
-         Artist_dim ar ON ts.ArtistId = ar.ArtistId
+         Track_dim t ON ts.TrackId = t.TrackId
      GROUP BY 
-         ar.Name
+         t.TrackName
      ORDER BY 
-         TotalQuantitySold DESC;
+         TotalRevenue DESC
+     LIMIT 10;
+
      ```
 
 3. **Predaj podľa skladby**
