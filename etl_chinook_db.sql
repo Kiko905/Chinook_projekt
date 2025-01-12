@@ -72,7 +72,7 @@ CREATE TABLE Employee (
     Phone VARCHAR(24),
     Fax VARCHAR(24),
     Email VARCHAR(60),
-    FOREIGN KEY (ReportsTo) REFERENCES Employee(EmployeeId) -- Vzťah na samého seba
+    FOREIGN KEY (ReportsTo) REFERENCES Employee(EmployeeId) 
 );
 
 -- Tabuľka Customer
@@ -158,18 +158,18 @@ FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 CREATE OR REPLACE TABLE TrackSale_fact AS
 SELECT
     il.InvoiceLineId AS InvoiceLineId,
-    il.InvoiceId AS InvoiceID, -- Prepojenie na Invoice_dim
+    il.InvoiceId AS InvoiceID, 
     il.UnitPrice AS UnitPrice,
     il.Quantity AS Quantity,
-    (il.UnitPrice * il.Quantity) AS TotalRevenue, -- Vypočítaný stĺpec
+    (il.UnitPrice * il.Quantity) AS TotalRevenue, 
     t.GenreId AS GenreId,
     t.AlbumId AS AlbumId,
     t.MediaTypeId AS MediaTypeId,
     t.TrackId AS TrackId,
-    al.ArtistId AS ArtistId, -- Prepojenie na interpreta cez album
-    i.CustomerId AS CustomerID, -- Prepojenie na Customer_dim
-    i.InvoiceDate AS InvoiceDate, -- Prepojenie na Date_dim
-    c.SupportRepId AS EmployeeID -- Prepojenie na Employee_dim cez Customer_dim
+    al.ArtistId AS ArtistId, 
+    i.CustomerId AS CustomerID, 
+    i.InvoiceDate AS InvoiceDate, 
+    c.SupportRepId AS EmployeeID 
 FROM
     InvoiceLine AS il
 JOIN
@@ -179,7 +179,7 @@ JOIN
 JOIN
     Invoice AS i ON il.InvoiceId = i.InvoiceId
 JOIN
-    Customer AS c ON i.CustomerId = c.CustomerId; -- Prepojenie na Customer pre získanie SupportRepId
+    Customer AS c ON i.CustomerId = c.CustomerId; 
 
 
 -- Dimenzionálne tabuľky
@@ -271,10 +271,10 @@ SELECT
     DISTINCT
     InvoiceDate AS timestamp,
     DAY(InvoiceDate) AS day,
-    TO_CHAR(InvoiceDate, 'D') AS dayOfWeek, -- Returns day of the week as a number (1-7)
-    TO_CHAR(InvoiceDate, 'Day') AS DayOfWeekAsString, -- Day of the week as string (e.g., 'Monday')
+    TO_CHAR(InvoiceDate, 'D') AS dayOfWeek, 
+    TO_CHAR(InvoiceDate, 'Day') AS DayOfWeekAsString, 
     MONTH(InvoiceDate) AS month,
-    TO_CHAR(InvoiceDate, 'Month') AS monthAsString, -- Full month name
+    TO_CHAR(InvoiceDate, 'Month') AS monthAsString, 
     YEAR(InvoiceDate) AS year,
     WEEK(InvoiceDate) AS week,
     QUARTER(InvoiceDate) AS quarter
