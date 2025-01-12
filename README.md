@@ -50,7 +50,7 @@ Navrhli sme multi-dimenzionálny model typu hviezda s nasledujúcimi tabuľkami:
    - **Údaje**: `GenreId`, `Name`
    - **Typ dimenzie**: SCD Type 1
 
-![Dimenzionálny Model](Star_Diagram.png)
+![Dimenzionálny Model](Star_Diagram_oprava.png)
 
 
   
