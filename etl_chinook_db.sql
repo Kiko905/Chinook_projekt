@@ -155,9 +155,10 @@ FROM @skunk_stage/track.csv
 FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 
 -- Faktová tabuľka TrackSale_fact
-CREATE TABLE TrackSale_fact AS
+CREATE OR REPLACE TABLE TrackSale_fact AS
 SELECT
     il.InvoiceLineId AS InvoiceLineId,
+    il.InvoiceId AS InvoiceID, -- Prepojenie na Invoice_dim
     il.UnitPrice AS UnitPrice,
     il.Quantity AS Quantity,
     (il.UnitPrice * il.Quantity) AS TotalRevenue, -- Vypočítaný stĺpec
@@ -165,30 +166,38 @@ SELECT
     t.AlbumId AS AlbumId,
     t.MediaTypeId AS MediaTypeId,
     t.TrackId AS TrackId,
-        al.ArtistId AS ArtistId -- Pridané prepojenie na interpreta cez album
+    al.ArtistId AS ArtistId, -- Prepojenie na interpreta cez album
+    i.CustomerId AS CustomerID, -- Prepojenie na Customer_dim
+    i.InvoiceDate AS InvoiceDate, -- Prepojenie na Date_dim
+    c.SupportRepId AS EmployeeID -- Prepojenie na Employee_dim cez Customer_dim
 FROM
     InvoiceLine AS il
 JOIN
     Track AS t ON il.TrackId = t.TrackId
 JOIN
-        Album AS al ON t.AlbumId = al.AlbumId; -- Pridaný JOIN pre získanie ArtistId
+    Album AS al ON t.AlbumId = al.AlbumId
+JOIN
+    Invoice AS i ON il.InvoiceId = i.InvoiceId
+JOIN
+    Customer AS c ON i.CustomerId = c.CustomerId; -- Prepojenie na Customer pre získanie SupportRepId
+
 
 -- Dimenzionálne tabuľky
 
 -- Track_dim
-CREATE TABLE Track_dim AS
+CREATE OR REPLACE TABLE Track_dim AS
 SELECT
     TrackId AS TrackId,
     Name AS TrackName,
     Composer AS Composer,
     Milliseconds AS Milliseconds,
     Bytes AS Bytes,
-    UnitPrice AS UnitPrice -- Tento stĺpec by mohol byť aj vo faktovej tabuľke, záleží od požiadaviek
+    UnitPrice AS UnitPrice
 FROM
     Track;
 
 -- Artist_dim
-CREATE TABLE Artist_dim AS
+CREATE OR REPLACE TABLE Artist_dim AS
 SELECT
     ArtistId AS ArtistId,
     Name AS ArtistName
@@ -196,7 +205,7 @@ FROM
     Artist;
 
 -- Album_dim
-CREATE TABLE Album_dim AS
+CREATE OR REPLACE TABLE Album_dim AS
 SELECT
     AlbumId AS AlbumId,
     Title AS AlbumTitle
@@ -204,20 +213,90 @@ FROM
     Album;
 
 -- MediaType_dim
-CREATE TABLE MediaType_dim AS
+CREATE OR REPLACE TABLE MediaType_dim AS
 SELECT
     MediaTypeId AS MediaTypeId,
     Name AS MediaTypeName
 FROM
     MediaType;
 
--- Genre
-CREATE TABLE Genre_dim AS
+-- Genre_dim
+CREATE OR REPLACE TABLE Genre_dim AS
 SELECT
     GenreId AS GenreId,
     Name AS GenreName
 FROM
     Genre;
+
+-- Customer_dim
+CREATE OR REPLACE TABLE Customer_dim AS
+SELECT
+    CustomerId AS CustomerID,
+    FirstName AS FirstName,
+    LastName AS LastName,
+    Address AS Address,
+    City AS City,
+    State AS State,
+    Country AS Country,
+    PostalCode AS PostalCode,
+    Phone AS Phone,
+    Email AS Email,
+    SupportRepId AS SupportRepID
+FROM
+    Customer;
+
+-- Employee_dim
+CREATE OR REPLACE TABLE Employee_dim AS
+SELECT
+    EmployeeId AS EmployeeID,
+    LastName AS LastName,
+    FirstName AS FirstName,
+    Title AS Title,
+    BirthDate AS BirthDate,
+    HireDate AS HireDate,
+    Address AS Address,
+    City AS City,
+    State AS State,
+    Country AS Country,
+    PostalCode AS PostalCode,
+    Phone AS Phone,
+    Fax AS Fax,
+    Email AS Email
+FROM
+    Employee;
+
+-- Date_dim
+CREATE OR REPLACE TABLE Date_dim AS
+SELECT
+    DISTINCT
+    InvoiceDate AS timestamp,
+    DAY(InvoiceDate) AS day,
+    TO_CHAR(InvoiceDate, 'D') AS dayOfWeek, -- Returns day of the week as a number (1-7)
+    TO_CHAR(InvoiceDate, 'Day') AS DayOfWeekAsString, -- Day of the week as string (e.g., 'Monday')
+    MONTH(InvoiceDate) AS month,
+    TO_CHAR(InvoiceDate, 'Month') AS monthAsString, -- Full month name
+    YEAR(InvoiceDate) AS year,
+    WEEK(InvoiceDate) AS week,
+    QUARTER(InvoiceDate) AS quarter
+FROM
+    Invoice;
+
+
+-- Invoice_dim
+CREATE OR REPLACE TABLE Invoice_dim AS
+SELECT
+    InvoiceId AS InvoiceID,
+    CustomerId AS CustomerID,
+    InvoiceDate AS InvoiceDate,
+    BillingAddress AS BillingAddress,
+    BillingCity AS BillingCity,
+    BillingState AS BillingState,
+    BillingCountry AS BillingCountry,
+    BillingPostalCode AS BillingPostalCode,
+    Total AS Total
+FROM
+    Invoice;
+
 
 DROP  TABLE  IF  EXISTS Artist;
 DROP  TABLE  IF  EXISTS Album;
