@@ -145,14 +145,14 @@ JOIN
 ```sql
 CREATE TABLE  Track_dim  AS
 SELECT
-	TrackId AS TrackId,
-	Name  AS TrackName,
-	Composer AS Composer,
-	Milliseconds AS Milliseconds,
-	Bytes AS Bytes,
-	UnitPrice AS UnitPrice
+    TrackId AS TrackId,
+    Name  AS TrackName,
+    Composer AS Composer,
+    Milliseconds AS Milliseconds,
+    Bytes AS Bytes,
+    UnitPrice AS UnitPrice
 FROM
-	Track;
+    Track;
 ```
 
   
@@ -162,10 +162,10 @@ FROM
 ```sql
 CREATE  TABLE  Artist_dim  AS
 SELECT
-	ArtistId AS ArtistId,
-	Name  AS ArtistName
+    ArtistId AS ArtistId,
+    Name  AS ArtistName
 FROM
-	Artist;
+    Artist;
 ```
 
   
@@ -175,10 +175,10 @@ FROM
 ```sql
 CREATE  TABLE  Album_dim  AS
 SELECT
-	AlbumId AS AlbumId,
-	Title AS AlbumTitle
+    AlbumId AS AlbumId,
+    Title AS AlbumTitle
 FROM
-	Album;
+    Album;
 
 ```
 
@@ -189,10 +189,10 @@ FROM
 ```sql
 CREATE  TABLE  MediaType_dim  AS
 SELECT
-	MediaTypeId AS MediaTypeId,
-	Name  AS MediaTypeName
+    MediaTypeId AS MediaTypeId,
+    Name  AS MediaTypeName
 FROM
-	MediaType;
+    MediaType;
 ```
 
   
@@ -202,10 +202,10 @@ FROM
 ```sql
 CREATE  TABLE  Genre_dim  AS
 SELECT
-	GenreId AS GenreId,
-	Name  AS GenreName
+    GenreId AS GenreId,
+    Name  AS GenreName
 FROM
-	Genre;
+    Genre;
 ```
 
 6.  **Customer_dim:** Dimenzia pre zákazníkov, ktorá obsahuje údaje o zákazníkoch.
@@ -213,19 +213,19 @@ FROM
 ```sql
 CREATE  TABLE Customer_dim AS
 SELECT
-	CustomerId AS CustomerID,
-	FirstName AS FirstName,
-	LastName AS LastName,
-	Address  AS  Address,
-	City AS City,
-	State  AS  State,
-	Country AS Country,
-	PostalCode AS PostalCode,
-	Phone AS Phone,
-	Email AS Email,
-	SupportRepId AS SupportRepID
+    CustomerId AS CustomerID,
+    FirstName AS FirstName,
+    LastName AS LastName,
+    Address  AS  Address,
+    City AS City,
+    State  AS  State,
+    Country AS Country,
+    PostalCode AS PostalCode,
+    Phone AS Phone,
+    Email AS Email,
+    SupportRepId AS SupportRepID
 FROM
-	Customer;
+    Customer;
 ```
 
 7.  **Employee_dim:** Dimenzia pre zamestnancov, ktorá obsahuje údaje o zamestnancoch.
@@ -233,40 +233,40 @@ FROM
 ```sql
 CREATE TABLE Employee_dim AS
 SELECT
-	EmployeeId AS EmployeeID,
-	LastName AS LastName,
-	FirstName AS FirstName,
-	Title AS Title,
-	BirthDate AS BirthDate,
-	HireDate AS HireDate,
-	Address  AS  Address,
-	City AS City,
-	State  AS  State,
-	Country AS Country,
-	PostalCode AS PostalCode,
-	Phone AS Phone,
-	Fax AS Fax,
-	Email AS Email
+    EmployeeId AS EmployeeID,
+    LastName AS LastName,
+    FirstName AS FirstName,
+    Title AS Title,
+    BirthDate AS BirthDate,
+    HireDate AS HireDate,
+    Address  AS  Address,
+    City AS City,
+    State  AS  State,
+    Country AS Country,
+    PostalCode AS PostalCode,
+    Phone AS Phone,
+    Fax AS Fax,
+    Email AS Email
 FROM
-	Employee;
+    Employee;
 ```
 8.  **Date_dim:** Dimenzia pre dátum, ktorá obsahuje údaje o dátume.
 
 ```sql
 CREATE TABLE Date_dim AS
 SELECT
-	DISTINCT
-	InvoiceDate AS  timestamp,
-	DAY(InvoiceDate) AS  day,
-	TO_CHAR(InvoiceDate, 'D') AS  dayOfWeek,
-	TO_CHAR(InvoiceDate, 'Day') AS DayOfWeekAsString, 
-	MONTH(InvoiceDate) AS  month,
-	TO_CHAR(InvoiceDate, 'Month') AS monthAsString, 
-	YEAR(InvoiceDate) AS  year,
-	WEEK(InvoiceDate) AS  week,
-	QUARTER(InvoiceDate) AS  quarter
+    DISTINCT
+    InvoiceDate AS  timestamp,
+    DAY(InvoiceDate) AS  day,
+    TO_CHAR(InvoiceDate, 'D') AS  dayOfWeek,
+    TO_CHAR(InvoiceDate, 'Day') AS DayOfWeekAsString, 
+    MONTH(InvoiceDate) AS  month,
+    TO_CHAR(InvoiceDate, 'Month') AS monthAsString, 
+    YEAR(InvoiceDate) AS  year,
+    WEEK(InvoiceDate) AS  week,
+    QUARTER(InvoiceDate) AS  quarter
 FROM
-	Invoice;
+    Invoice;
 ```
 
 9.  **Invoice_dim:** Dimenzia pre Invoice, ktorá obsahuje údaje o objednávke.
@@ -274,17 +274,17 @@ FROM
 ```sql
 CREATE TABLE Invoice_dim AS
 SELECT
-	InvoiceId AS InvoiceID,
-	CustomerId AS CustomerID,
-	InvoiceDate AS InvoiceDate,
-	BillingAddress AS BillingAddress,
-	BillingCity AS BillingCity,
-	BillingState AS BillingState,
-	BillingCountry AS BillingCountry,
-	BillingPostalCode AS BillingPostalCode,
-	Total AS Total
+    InvoiceId AS InvoiceID,
+    CustomerId AS CustomerID,
+    InvoiceDate AS InvoiceDate,
+    BillingAddress AS BillingAddress,
+    BillingCity AS BillingCity,
+    BillingState AS BillingState,
+    BillingCountry AS BillingCountry,
+    BillingPostalCode AS BillingPostalCode,
+    Total AS Total
 FROM
-	Invoice;
+    Invoice;
 ```
   
 
