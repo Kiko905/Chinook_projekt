@@ -25,30 +25,50 @@ Navrhli sme multi-dimenzionálny model typu hviezda s nasledujúcimi tabuľkami:
 
 ### Faktová tabuľka
 **TrackSale_fact**:
-- **Kľúče**: `InvoiceLineId`, `TrackId`, `AlbumId`, `ArtistId`, `GenreId`, `MediaTypeId`
-- **Metirky**: `UnitPrice`, `Quantity`, `TotalRevenue`
-- Použitie: Meranie celkového príjmu z predaja, analýza počtu predaných jednotiek.
+- **Kľúče**: InvoiceLineId, TrackId, AlbumId, ArtistId, GenreId, MediaTypeId
+- **Metirky**: UnitPrice, Quantity, TotalRevenue
+- **Použitie**: Meranie celkového príjmu z predaja, analýza počtu predaných jednotiek.
 
 ### Dimenzionálne tabuľky
+
 1. **Track_dim**
-   - **Údaje**: `TrackId`, `Name`, `Composer`, `Milliseconds`, `Bytes`, `UnitPrice`
+   - **Údaje**: TrackId, Name, Composer, Milliseconds, Bytes, UnitPrice
    - **Typ dimenzie**: SCD Type 1
 
 2. **Artist_dim**
-   - **Údaje**: `ArtistId`, `Name`
+   - **Údaje**: ArtistId, Name
    - **Typ dimenzie**: SCD Type 1
 
 3. **Album_dim**
-   - **Údaje**: `AlbumId`, `Title`
+   - **Údaje**: AlbumId, Title
    - **Typ dimenzie**: SCD Type 1
 
 4. **MediaType_dim**
-   - **Údaje**: `MediaTypeId`, `Name`
+   - **Údaje**: MediaTypeId, Name
    - **Typ dimenzie**: SCD Type 1
 
 5. **Genre_dim**
-   - **Údaje**: `GenreId`, `Name`
+   - **Údaje**: GenreId, Name
    - **Typ dimenzie**: SCD Type 1
+
+6. **Customer_dim**
+   - **Údaje**: CustomerId, FirstName, LastName, Address, City, State, Country, PostalCode, Phone, Email, SupportRepId
+   - **Typ dimenzie**: SCD Type 1
+
+7. **Employee_dim**
+   - **Údaje**: EmployeeId, LastName, FirstName, Title, BirthDate, HireDate, Address, City, State, Country, PostalCode, Phone, Fax, Email
+   - **Typ dimenzie**: SCD Type 1
+
+8. **Date_dim**
+   - **Údaje**: timestamp, day, dayOfWeek, DayOfWeekAsString, month, monthAsString, year, week, quarter
+   - **Typ dimenzie**: SCD Type 1
+
+9. **Invoice_dim**
+   - **Údaje**: InvoiceId, CustomerId, InvoiceDate, BillingAddress, BillingCity, BillingState, BillingCountry, BillingPostalCode, Total
+   - **Typ dimenzie**: SCD Type 1
+
+
+
 
 ![Dimenzionálny Model](Star_diagram_oprava.png)
 
