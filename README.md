@@ -127,31 +127,45 @@ V tejto fáze boli dáta z staging tabuliek spracované na vytvorenie dimenzií 
 Faktová tabuľka obsahuje informácie o predaji skladieb, ako sú jednotkové ceny, množstvo a celkové príjmy. Spojením tabuliek `InvoiceLine`, `Track`, `Album`, `Invoice`, `Customer`,`Artist`,`Date`,`Employee`,`Genre`, `MediaType` sme získali všetky potrebné informácie:
 
 ```sql
-CREATE TABLE TrackSale_fact AS
+CREATE OR REPLACE TABLE TrackSale_fact AS
 SELECT
-    il.InvoiceLineId AS InvoiceLineId, 
-    il.InvoiceId AS InvoiceID,
+    il.InvoiceLineId AS InvoiceLineId,
+    il.InvoiceId AS InvoiceID, -- Prepojenie na Invoice_dim
     il.UnitPrice AS UnitPrice,
     il.Quantity AS Quantity,
-    (il.UnitPrice * il.Quantity) AS TotalRevenue,
-    t.GenreId AS GenreId,
-    t.AlbumId AS AlbumId,
-    t.MediaTypeId AS MediaTypeId,
-    t.TrackId AS TrackId,
-    al.ArtistId AS ArtistId,
-    i.CustomerId AS CustomerID,
-    i.InvoiceDate AS InvoiceDate,
-    c.SupportRepId AS EmployeeID
+    (il.UnitPrice * il.Quantity) AS TotalRevenue, -- Vypočítaný stĺpec
+    t.GenreId AS GenreId, -- Prepojenie na Genre_dim
+    t.AlbumId AS AlbumId, -- Prepojenie na Album_dim
+    t.MediaTypeId AS MediaTypeId, -- Prepojenie na MediaType_dim
+    t.TrackId AS TrackId, -- Prepojenie na Track_dim
+    al.ArtistId AS ArtistId, -- Prepojenie na Artist_dim
+    i.CustomerId AS CustomerID, -- Prepojenie na Customer_dim
+    i.InvoiceDate AS InvoiceDate, -- Prepojenie na Date_dim
+    c.SupportRepId AS EmployeeID -- Prepojenie na Employee_dim cez Customer_dim
 FROM
     InvoiceLine AS il
+-- Prepojenie na Track_dim
 JOIN
     Track AS t ON il.TrackId = t.TrackId
+-- Prepojenie na Album_dim
 JOIN
     Album AS al ON t.AlbumId = al.AlbumId
+-- Prepojenie na Genre_dim
+JOIN
+    Genre AS g ON t.GenreId = g.GenreId
+-- Prepojenie na MediaType_dim
+JOIN
+    MediaType AS mt ON t.MediaTypeId = mt.MediaTypeId
+-- Prepojenie na Invoice_dim
 JOIN
     Invoice AS i ON il.InvoiceId = i.InvoiceId
+-- Prepojenie na Customer_dim
 JOIN
-    Customer AS c ON i.CustomerId = c.CustomerId;
+    Customer AS c ON i.CustomerId = c.CustomerId
+-- Prepojenie na Employee_dim cez Customer_dim
+LEFT JOIN
+    Employee AS e ON c.SupportRepId = e.EmployeeId;
+
 ```
 
   
